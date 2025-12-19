@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let chartData = {};
 
+    textInput.addEventListener('input', () => {
+        analyzeBtn.disabled = textInput.value.trim() === '';
+    });
+
+    // Trigger the input event on page load to set the initial button state
+    textInput.dispatchEvent(new Event('input'));
+
     analyzeBtn.addEventListener('click', async () => {
         const texts = textInput.value.split('\n').filter(text => text.trim() !== '');
         if (texts.length === 0) {

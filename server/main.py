@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 import umap
@@ -25,8 +25,11 @@ class Texts(BaseModel):
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-@app.post("/api/process-texts/")
+@app.post("/process-texts/")
 async def process_texts(texts: Texts):
+    if not texts.texts:
+        raise HTTPException(status_code=400, detail="Input texts cannot be empty.")
+
     embeddings = model.encode(texts.texts)
 
     reducer = umap.UMAP(n_components=3)
