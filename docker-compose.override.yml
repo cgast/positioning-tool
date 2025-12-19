@@ -1,6 +1,20 @@
-version: '3.8'
+# Development overrides
+# This file is automatically loaded alongside docker-compose.yml in development
 
 services:
   backend:
     volumes:
-      - ./server:/app
+      - ./backend/src:/app/src
+    environment:
+      - API_PREFIX=
+    # Override healthcheck for faster dev iteration
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  frontend:
+    volumes:
+      - ./frontend/public:/usr/share/nginx/html:ro

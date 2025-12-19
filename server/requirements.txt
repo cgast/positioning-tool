@@ -1,8 +1,0 @@
-fastapi
-pydantic
-sentence-transformers
-umap-learn
-python-multipart
-uvicorn
-numpy
-scikit-learn

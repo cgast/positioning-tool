@@ -1,15 +1,19 @@
+import os
+
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 import umap
-import numpy as np
-from fastapi.middleware.cors import CORSMiddleware
-
-import os
 
 api_prefix = os.environ.get("API_PREFIX", "")
 
-app = FastAPI(root_path=api_prefix)
+app = FastAPI(
+    title="Text Positioning API",
+    description="API for generating text embeddings and dimensionality reduction",
+    version="1.0.0",
+    root_path=api_prefix
+)
 
 # Allow CORS for local development
 app.add_middleware(
@@ -20,17 +24,36 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class Texts(BaseModel):
+
+class TextsRequest(BaseModel):
     texts: list[str]
 
+
+# Load model at startup
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for container orchestration."""
+    return {"status": "healthy"}
+
+
 @app.post("/process-texts/")
-async def process_texts(texts: Texts):
-    if not texts.texts:
+async def process_texts(request: TextsRequest):
+    """
+    Process a list of texts and return embeddings in multiple dimensions.
+
+    Returns:
+        - embeddings: Full sentence embeddings
+        - 1d: 1-dimensional projection
+        - 2d: 2-dimensional projection (UMAP)
+        - 3d: 3-dimensional projection (UMAP)
+    """
+    if not request.texts:
         raise HTTPException(status_code=400, detail="Input texts cannot be empty.")
 
-    embeddings = model.encode(texts.texts)
+    embeddings = model.encode(request.texts)
 
     reducer = umap.UMAP(n_components=3)
     embedding_3d = reducer.fit_transform(embeddings)
