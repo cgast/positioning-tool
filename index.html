@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Positioning Diagram</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Text Positioning Diagram</h1>
+    <div class="container">
+        <div class="input-section">
+            <h2>Enter Texts</h2>
+            <textarea id="text-input" rows="10" placeholder="Enter each text on a new line..."></textarea>
+            <button id="analyze-btn">Analyze</button>
+            <div id="status"></div>
+        </div>
+        <div class="output-section">
+            <div class="chart-container">
+                <h2>1D Positioning</h2>
+                <div id="chart-1d" class="chart"></div>
+                <button class="download-btn" data-chart="1d">Download PNG</button>
+            </div>
+            <div class="chart-container">
+                <h2>2D Positioning</h2>
+                <div id="chart-2d" class="chart"></div>
+                <button class="download-btn" data-chart="2d">Download PNG</button>
+            </div>
+            <div class="chart-container">
+                <h2>3D Positioning</h2>
+                <div id="chart-3d" class="chart"></div>
+                <button class="download-btn" data-chart="3d">Download PNG</button>
+            </div>
+            <button id="download-data-btn">Download Raw Data</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
