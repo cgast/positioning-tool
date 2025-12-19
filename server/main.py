@@ -25,7 +25,7 @@ class Texts(BaseModel):
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-@app.post("/api/process-texts/")
+@app.post("/process-texts/")
 async def process_texts(texts: Texts):
     embeddings = model.encode(texts.texts)
 
