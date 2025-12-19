@@ -3,6 +3,8 @@
 
 services:
   backend:
+    expose:
+      - "8000"
     volumes:
       - ./backend/src:/app/src
     environment:
@@ -16,5 +18,7 @@ services:
       start_period: 10s
 
   frontend:
+    ports:
+      - "80:80"  
     volumes:
       - ./frontend/public:/usr/share/nginx/html:ro
